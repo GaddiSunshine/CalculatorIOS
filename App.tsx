@@ -39,16 +39,23 @@ const App = () => {
     type: 'none',
   });
 
-  const setAc = (isSet: boolean) => {
+  /**
+   * Sets the Clear button in C or AC state
+   * @param isSet - if true, then C state. Otherwise AC state.
+   */
+
+  const setC = (isSet: boolean) => {
     const handlePress = isSet ? 'clear' : 'clearAll';
     const label = isSet ? 'C' : 'AC';
     setClearButton({...clearButton, handlePress, label});
   };
 
-  // the % operator works inconsistently in the ios calculator. If the selected
-  // operator is either x or /, then it divides the 'onscreen' number by 100.
-  // however, if the selected operator is either + or -, then it calculates onscreen percent
-  // of the sum and sets as onscreen number.
+  /**
+   * the % operator works inconsistently in the ios calculator. If the selected
+   * operator is either x or /, then it divides the 'onscreen' number by 100.
+   * however, if the selected operator is either + or -, then it calculates onscreen percent
+   * of the sum and sets the outcome as the onscreen number.
+   */
   const percentage = () => {
     const {currOperator, sum, onScreen} = calcState;
 
@@ -57,7 +64,7 @@ const App = () => {
         ...calcState,
         onScreen: `${sum * +onScreen * 0.01}`,
       });
-      setAc(false);
+      setC(false);
     } else {
       if (onScreen === '') {
         setCalcState({...calcState, sum: sum / 100});
@@ -67,7 +74,19 @@ const App = () => {
     }
   };
 
-  const mathOperation = (operator: string = '', sum: number, value: number) => {
+  /**
+   * Does a math operation between two numbers
+   * with an operator
+   * @param operator - the operator
+   * @param sum - the first number
+   * @param value - the second number
+   * @returns - the outcome of the math operation
+   */
+  const mathOperation = (
+    operator: string = '',
+    sum: number,
+    value: number,
+  ): number => {
     switch (operator) {
       case '＋':
         return sum + value;
@@ -81,6 +100,12 @@ const App = () => {
     return value;
   };
 
+  /**
+   * Calculates the output. If an operator is triggering
+   * this call, then the label is the operator. Otherwise
+   * the label is empty string.
+   * @param label - the label of the operator button.
+   */
   const calcOutput = (label: string = '') => {
     const {currOperator, onScreen, sum, previousValue, extraOp} = calcState;
 
@@ -104,9 +129,13 @@ const App = () => {
       });
     }
 
-    setAc(label === '' ? false : true);
+    setC(label === '' ? false : true);
   };
 
+  /**
+   * Handles the click of a button.
+   * @param button - all the button properties.
+   */
   const handleClick = (button: ButtonType) => {
     const {label, handlePress} = button;
     const {
@@ -119,19 +148,21 @@ const App = () => {
       extraOp,
     } = calcState;
 
+    // This switch statement handles the onPress event appropriate for each button
     switch (handlePress) {
+      // Numbers or comma:
       case 'conCat':
         if (label === '.' && dot) {
           break;
         }
 
-        // if the previous calculation has ended (with the equals button) then
+        // If the previous calculation has ended (with the equals button) then
         // need to reset the state for a new calculation.
         const wasEqual = buttonLabel === '=' ? 'clear' : '';
 
         let newValue;
 
-        // if the comma is the first button to be pressed, then it will add a 0 in front.
+        // If the comma is the first button to be pressed, then it will add a 0 in front.
         // Otherwise just concatenate the pressed number onto what we have on the screen.
         newValue =
           onScreen === '' && label === '.'
@@ -154,10 +185,15 @@ const App = () => {
           sum: wasEqual ? 0 : sum,
           buttonLabel: label,
         });
-        setAc(true);
+        setC(true);
         break;
+      // Operator button:
       case 'setOp':
+        // If there is no number on the screen, then it should not be
+        // possible to press an operator button
         if (sum || onScreen) {
+          // If an operator has already been pressed, then the user is
+          // swapping his choice of operator
           if (currOperator) {
             setCalcState({
               ...calcState,
@@ -175,28 +211,40 @@ const App = () => {
               buttonLabel: label,
             });
           }
+
+          // If the user is continuing his calculation, then we will
+          // calculate the sum so far
           if (onScreen) {
             calcOutput(label);
           }
-          setAc(true);
+
+          // Set appropriate clear button state
+          setC(true);
         }
         break;
+      // 'Percentage' button:
       case 'percentage':
         percentage();
         break;
+      // 'C' button:
       case 'clear':
+        // The C button clears the onScreen number and goes to 'AC' state
         setCalcState({
           ...calcState,
           onScreen: '0',
           dot: false,
           buttonLabel: label,
         });
-        setAc(false);
+        setC(false);
         break;
+      // 'AC' button:
       case 'clearAll':
+        // Sets the calculator to original state
         setCalcState(defaultState);
         break;
+      // '+/-' button:
       case 'flipPositivity':
+        // Multiples whatever number is on screen with -1
         setCalcState({
           ...calcState,
           sum: onScreen === '' ? sum * -1 : sum,
@@ -204,11 +252,14 @@ const App = () => {
           buttonLabel: label,
         });
         break;
+      // '=' button:
       case 'calcOutput':
         calcOutput();
     }
   };
 
+  // When the screen is swiped to either left or right, the most recent
+  // pressed number is cleared from the screen.
   const swipeHandler = () => {
     const newOnScreen = calcState.onScreen.substring(
       0,

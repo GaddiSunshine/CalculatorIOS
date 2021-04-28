@@ -36,35 +36,53 @@ interface Props {
   onSwipe: () => void;
 }
 
-export const Output = ({onScreen, sum, onSwipe}: Props) => {
-  while ((onScreen.match(/\d/g) || []).length > 9) {
-    onScreen = onScreen.substring(0, onScreen.length - 1);
+/**
+ * Takes a string that contains numbers. Reduces the amount of numbers from the right
+ * until the string contains 9 numbers at most. Then returns it.
+ * @param number - the number that needs to be reduced 9 numbers at most
+ * @returns - the number
+ */
+const limitNumberCount9 = (number: string) => {
+  let newNumber = number;
+  while ((newNumber.match(/\d/g) || []).length > 9) {
+    newNumber = newNumber.substring(0, newNumber.length - 1);
   }
+  return newNumber;
+};
 
+export const Output = ({onScreen, sum, onSwipe}: Props) => {
+  // The screen is supposed to limit the upper bound of number count at 9
+  onScreen = limitNumberCount9(onScreen);
+
+  // Counts the number of fraction digits.
   const fractionDigits = onScreen.includes('.')
     ? onScreen.split('.')[1].length
     : 0;
 
+  // If the onscreen is empty, then show the sum instead.
   const show = onScreen !== '' ? +onScreen : sum;
 
-  // Depends on locale, but I choose de-DE because it seems to have the . and , seperators which we want
+  // Depends on locale, but I choose de-DE because it seems to have the . and , seperators which we want.
+  // The minimumFractionDigits make sure that if we have trailing zeroes, they are still shown on screen.
   let formatted = show.toLocaleString('de-DE', {
     minimumFractionDigits: fractionDigits,
   });
 
-  // toLocaleString is not supported on android. This formats the output number on android
-  if (Platform.OS === 'android') {
+  // toLocaleString is not supported on android. This formats the output number correctly on android
+  if (Platform.OS === 'android' || true) {
     formatted.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
+  // If the most recent button was ',', then it is discarded when the string is parsed to number.
+  // Therefore we add it back on.
   if (onScreen && onScreen[onScreen.length - 1] === '.') {
     formatted = `${formatted},`;
   }
 
-  while ((formatted.match(/\d/g) || []).length > 9) {
-    formatted = formatted.substring(0, formatted.length - 1);
-  }
+  // We need to do this again
+  formatted = limitNumberCount9(formatted);
 
+  // Counts the amount of numbers on screen for appropriate font size
   const numCount = (formatted.match(/\d/g) || []).length;
 
   return (
