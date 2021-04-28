@@ -69,7 +69,6 @@ const App = () => {
    * Sets the Clear button in C or AC state
    * @param isSet - if true, then C state. Otherwise AC state.
    */
-
   const setC = (isSet: boolean) => {
     const handlePress = isSet ? 'clear' : 'clearAll';
     const label = isSet ? 'C' : 'AC';
@@ -77,7 +76,7 @@ const App = () => {
   };
 
   /**
-   * the % operator works inconsistently in the ios calculator. If the selected
+   * The % operator works inconsistently in the ios calculator. If the selected
    * operator is either x or /, then it divides the 'onscreen' number by 100.
    * however, if the selected operator is either + or -, then it calculates onscreen percent
    * of the sum and sets the outcome as the onscreen number.
@@ -103,7 +102,7 @@ const App = () => {
   /**
    * Calculates the output. If an operator is triggering
    * this call, then the label is the operator. Otherwise
-   * the label is empty string.
+   * the label is the empty string.
    * @param label - the label of the operator button.
    */
   const calcOutput = (label: string = '') => {
@@ -117,19 +116,19 @@ const App = () => {
         currOperator: label,
         extraOp: currOperator,
         onScreen: '',
-        buttonLabel: label ? label : '=',
+        buttonLabel: label || '=',
       });
     } else {
       setCalcState({
         ...calcState,
         sum: mathOperation(currOperator || extraOp, sum, previousValue),
         currOperator: '',
-        buttonLabel: label ? label : '=',
+        buttonLabel: label || '=',
         extraOp: currOperator || extraOp,
       });
     }
 
-    setC(label === '' ? false : true);
+    setC(label !== '');
   };
 
   /**

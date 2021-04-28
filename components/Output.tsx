@@ -55,7 +55,6 @@ const limitNumberCount = (number: string, limit: number) => {
  * @param number - a big number that doesnt fit the screen
  * @returns - the number in the preferred format
  */
-
 const formatBigNumber = (number: string) => {
   const count = (number.split('.')[0].match(/\d/g) || []).length;
   const num = limitNumberCount(`${+number / 10 ** (count - 1)}`, 5);
@@ -68,15 +67,13 @@ const formatBigNumber = (number: string) => {
  * @param number - the number to be checked
  * @returns - the amount of starting zeroes
  */
-
 const countStartingZeroes = (number: number) => {
-  if (number > 1 || number === 0) {
+  if (number === 0 || number > 1 || number < -1) {
     return 0;
   }
+  let temp = number > 0 ? number : number * -1;
   let zeroCount = 0;
-  let temp = number;
   while (temp < 1) {
-    console.log(temp);
     temp *= 10;
     zeroCount += 1;
   }
@@ -100,7 +97,7 @@ export const Output = ({onScreen, sum, onSwipe}: Props) => {
   const show = onScreen !== '' ? +onScreen : sum;
 
   // Checks if the numbers are too big or too small for the screen, then
-  // displays the number differently with x.xexx format
+  // displays the number differently with x.xe^x format
   const tooBig = show > 999999999 ? formatBigNumber(`${show}`) : '';
   const tooSmall =
     countStartingZeroes(show) > 3 ? formatSmallNumber(`${show}`) : '';

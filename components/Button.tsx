@@ -1,9 +1,10 @@
 import React from 'react';
 import styled, {css} from 'styled-components/native';
 import {palette, switchProp, ifProp} from 'styled-tools';
+
 import {ButtonType} from '../types';
 
-// we need a bright background behind the buttons so they will light up
+// We need a bright background behind the buttons so they will light up
 // when pressed, instead of fading into the dark background of the calculator,
 const BackgroundView = styled.View`
   background-color: rgba(255, 255, 255, 0.7);
