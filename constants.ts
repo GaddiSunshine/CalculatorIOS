@@ -1,0 +1,122 @@
+export const defaultState = {
+  sum: 0,
+  onScreen: '',
+  previousValue: 0,
+  buttonLabel: '',
+  currOperator: '',
+  dot: false,
+  extraOp: '',
+};
+
+export const buttons = [
+  {
+    handlePress: 'flipPositivity',
+    label: '+/-',
+    color: 'third',
+    type: 'none',
+  },
+  {
+    handlePress: 'percentage',
+    label: '%',
+    color: 'third',
+    type: 'none',
+  },
+  {
+    handlePress: 'setOp',
+    label: '÷',
+    color: 'primary',
+    type: 'operator',
+  },
+  {
+    handlePress: 'conCat',
+    label: '7',
+    color: 'secondary',
+    type: 'number',
+  },
+  {
+    handlePress: 'conCat',
+    label: '8',
+    color: 'secondary',
+    type: 'number',
+  },
+  {
+    handlePress: 'conCat',
+    label: '9',
+    color: 'secondary',
+    type: 'number',
+  },
+  {
+    handlePress: 'setOp',
+    label: '✕',
+    color: 'primary',
+    type: 'operator',
+  },
+  {
+    handlePress: 'conCat',
+    label: '4',
+    color: 'secondary',
+    type: 'number',
+  },
+  {
+    handlePress: 'conCat',
+    label: '5',
+    color: 'secondary',
+    type: 'number',
+  },
+  {
+    handlePress: 'conCat',
+    label: '6',
+    color: 'secondary',
+    type: 'number',
+  },
+  {
+    handlePress: 'setOp',
+    label: '－',
+    color: 'primary',
+    type: 'operator',
+  },
+  {
+    handlePress: 'conCat',
+    label: '1',
+    color: 'secondary',
+    type: 'number',
+  },
+  {
+    handlePress: 'conCat',
+    label: '2',
+    color: 'secondary',
+    type: 'number',
+  },
+  {
+    handlePress: 'conCat',
+    label: '3',
+    color: 'secondary',
+    type: 'number',
+  },
+  {
+    handlePress: 'setOp',
+    label: '＋',
+    color: 'primary',
+    type: 'operator',
+  },
+  {
+    handlePress: 'conCat',
+    label: '0',
+    color: 'secondary',
+    wide: true,
+    type: 'number',
+  },
+  {
+    handlePress: 'conCat',
+    label: '.',
+    color: 'secondary',
+    type: 'number',
+    symbol: ',',
+  },
+  {
+    handlePress: 'calcOutput',
+    label: '=',
+    color: 'primary',
+    type: 'none',
+  },
+];
