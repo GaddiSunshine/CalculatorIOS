@@ -84,7 +84,7 @@ const App = () => {
   const percentage = () => {
     const {currOperator, sum, onScreen} = calcState;
 
-    if (currOperator === '+' || currOperator === '-') {
+    if (currOperator === '＋' || currOperator === '－') {
       setCalcState({
         ...calcState,
         onScreen: `${sum * +onScreen * 0.01}`,
