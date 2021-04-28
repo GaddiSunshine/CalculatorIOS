@@ -6,7 +6,6 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 
 const StyledView = styled.View`
   padding-right: 19px;
-  height: 100px;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
