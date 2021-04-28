@@ -30,6 +30,32 @@ const Wrapper = styled.View`
   margin-bottom: 35px;
 `;
 
+/**
+ * Does a math operation between two numbers
+ * with an operator
+ * @param operator - the operator
+ * @param sum - the first number
+ * @param value - the second number
+ * @returns - the outcome of the math operation
+ */
+const mathOperation = (
+  operator: string = '',
+  sum: number,
+  value: number,
+): number => {
+  switch (operator) {
+    case '＋':
+      return sum + value;
+    case '－':
+      return sum - value;
+    case '✕':
+      return sum * value;
+    case '÷':
+      return sum / value;
+  }
+  return value;
+};
+
 const App = () => {
   const [calcState, setCalcState] = useState<CalcState>(defaultState);
   const [clearButton, setClearButton] = useState<ButtonType>({
@@ -72,32 +98,6 @@ const App = () => {
         setCalcState({...calcState, onScreen: `${+onScreen / 100}`});
       }
     }
-  };
-
-  /**
-   * Does a math operation between two numbers
-   * with an operator
-   * @param operator - the operator
-   * @param sum - the first number
-   * @param value - the second number
-   * @returns - the outcome of the math operation
-   */
-  const mathOperation = (
-    operator: string = '',
-    sum: number,
-    value: number,
-  ): number => {
-    switch (operator) {
-      case '＋':
-        return sum + value;
-      case '－':
-        return sum - value;
-      case '✕':
-        return sum * value;
-      case '÷':
-        return sum / value;
-    }
-    return value;
   };
 
   /**
